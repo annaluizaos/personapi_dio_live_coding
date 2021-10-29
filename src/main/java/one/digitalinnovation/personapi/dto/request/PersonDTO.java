@@ -1,35 +1,39 @@
-package one.digitalinnovation.personapi.entity;
+package one.digitalinnovation.personapi.dto.request;
 
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person {
+public class PersonDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 2, max = 100)
     private String firstName;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 2, max = 100)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @NotEmpty
+    @CPF
     private String cpf;
 
-    private LocalDate birthDate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private List<Phone> phones;
+    private String birthDate;
+
+    @NotEmpty
+    @Valid
+    private List<PhoneDTO> phones;
 
     public Long getId() {
         return id;
@@ -63,19 +67,19 @@ public class Person {
         this.cpf = cpf;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
-    public List<Phone> getPhones() {
+    public List<PhoneDTO> getPhones() {
         return phones;
     }
 
-    public void setPhones(List<Phone> phones) {
+    public void setPhones(List<PhoneDTO> phones) {
         this.phones = phones;
     }
 }
